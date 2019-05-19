@@ -110,11 +110,13 @@ void SUStudentInfo::on_pushButton_clicked() // finish
 
 void SUStudentInfo::on_pushButton_2_clicked() // finish
 {
+    int classes = 0;
     int visitedClasses = 0;
     int bonuses = 0;
     int presentation = 0;
     try
     {
+        classes = ui->label_9->text().toInt();
         visitedClasses = ui->lineEdit->text().toInt();
         bonuses = ui->lineEdit_2->text().toInt();
         presentation = ui->lineEdit_3->text().toInt();
@@ -132,7 +134,7 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
                                         Student::GroupNum == curStud->groupNum.value() &&
                                         Student::Surname == curStud->surname.value() &&
                                         Student::NumClasses == curStud->numClasses.value()).one();
-
+       stud.numClasses = classes;
        stud.visitedClasses = visitedClasses;
        stud.bonuses = bonuses;
        stud.presentation = presentation;
