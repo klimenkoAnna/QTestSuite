@@ -60,7 +60,7 @@ public:
 
     QString getBuffer()
     {
-        return stdstr_to_qstr( buffer.str() );
+        return QString::fromUtf8( buffer.str().c_str() );
     }
 
     void emptyBuffer()
