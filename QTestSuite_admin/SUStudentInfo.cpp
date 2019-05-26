@@ -38,17 +38,17 @@ void SUStudentInfo::updateUI()
         return;
     }
     ui->label_7->setText( QString( "%1" )
-                        .arg( curStud->groupNum.value() ) );
+                          .arg( curStud->groupNum.value() ) );
     ui->label_8->setText( QString( "%1" )
                           .arg( stdstr_to_qstr( curStud->surname.value() ) ) );
     ui->label_9->setText( QString( "%1" )
                           .arg(curStud->numClasses.value() ) );
     ui->lineEdit->setText( QString( "%1" )
-                        .arg( curStud->visitedClasses.value() ) );
+                           .arg( curStud->visitedClasses.value() ) );
     ui->lineEdit_2->setText( QString( "%1" )
-                        .arg( curStud->bonuses.value() ) );
+                             .arg( curStud->bonuses.value() ) );
     ui->lineEdit_3->setText( QString( "%1" )
-                        .arg( curStud->presentation.value() ) );
+                             .arg( curStud->presentation.value() ) );
 }
 void AddScoresData1(int minScore, int maxScore, int maxPossibleScore, int groupNum, std::string surname,
                     int numClasses, int visitedClasses, int bonuses, int presentation)
@@ -132,13 +132,12 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
     {
         Student stud = select<Student>( *pDB,
                                         Student::GroupNum == curStud->groupNum.value() &&
-                                        Student::Surname == curStud->surname.value() &&
-                                        Student::NumClasses == curStud->numClasses.value()).one();
-       stud.numClasses = classes;
-       stud.visitedClasses = visitedClasses;
-       stud.bonuses = bonuses;
-       stud.presentation = presentation;
-       stud.update();
+                                        Student::Surname == curStud->surname.value()).one();
+        stud.numClasses = classes;
+        stud.visitedClasses = visitedClasses;
+        stud.bonuses = bonuses;
+        stud.presentation = presentation;
+        stud.update();
 
     }
     catch( Except e )
@@ -156,8 +155,7 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
 
     Student stud = select<Student>( *pDB,
                                     Student::GroupNum == curStud->groupNum.value() &&
-                                    Student::Surname == curStud->surname.value() &&
-                                    Student::NumClasses == curStud->numClasses.value()).one();
+                                    Student::Surname == curStud->surname.value()).one();
     ClipsStdoutRouter router;
     Clips::ClipsCPPEnv env;
     env.Load(sClipsRulesFile1);
@@ -179,7 +177,7 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
                    stud.presentation
                    );
     env.Run(-1);
-   ui->label_11->setText(router.getBuffer());
+    ui->label_11->setText(router.getBuffer());
 }
 
 
