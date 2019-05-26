@@ -138,7 +138,7 @@ void TestWindow::selfUpdateUI()
     for( int i = 0; i < QTESTSUITE_MAX_ANS; ++i )
     {
         ui->verticalLayout_5->removeWidget( studAnswersControls[i].pAnswerCheck );
-        ui->verticalLayout_5->removeWidget( studAnswersControls[i].pAnswerText );
+        ui->verticalLayout_2->removeWidget( studAnswersControls[i].pAnswerText );
 
         if( studAnswersControls[i].pAnswerCheck )
         {
@@ -218,7 +218,7 @@ void TestWindow::selfUpdateUI()
         for( int i = 0; i < totalAns; ++i )
         {
             ui->verticalLayout_5->addWidget( studAnswersControls[i].pAnswerCheck );
-            ui->verticalLayout_5->addWidget( studAnswersControls[i].pAnswerText );
+            ui->verticalLayout_2->addWidget( studAnswersControls[i].pAnswerText );
         }
     }
     else
