@@ -85,7 +85,6 @@ void getScores( int &minScore, int &maxScore, int &maxPossibleScore )
     }
 
     testQuestions = curTest->questions().get().orderBy( TestSuite::TestQuestion::QuestionNum ).all();
-
     int totalQuestions = testQuestions.size();
     minScore = 0;
     maxScore = 0;
@@ -127,6 +126,8 @@ void getScores( int &minScore, int &maxScore, int &maxPossibleScore )
         }
         else // custom answer
         {
+            StudentCustomAnswer sca = curStud->customAnswer().get(TestSuite::StudentCustomAnswer::QuestionNum == i).one();
+            minScore         += sca.score;
             maxScore         += QTESTSUITE_CUSTOM_ANSWER_WORTH;
             maxPossibleScore += QTESTSUITE_CUSTOM_ANSWER_WORTH;
         }

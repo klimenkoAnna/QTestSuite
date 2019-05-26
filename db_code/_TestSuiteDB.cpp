@@ -1470,19 +1470,23 @@ const litesql::FieldType StudentCustomAnswer::Id("id_",A_field_type_integer,tabl
 const litesql::FieldType StudentCustomAnswer::Type("type_",A_field_type_string,table__);
 const litesql::FieldType StudentCustomAnswer::QuestionNum("questionNum_",A_field_type_integer,table__);
 const litesql::FieldType StudentCustomAnswer::CustomAnswer("customAnswer_",A_field_type_string,table__);
+const litesql::FieldType StudentCustomAnswer::Score("score",A_field_type_integer,table__);
 void StudentCustomAnswer::defaults() {
     id = 0;
     questionNum = 0;
+    score = 0;
 }
 StudentCustomAnswer::StudentCustomAnswer(const litesql::Database& db)
-     : litesql::Persistent(db), id(Id), type(Type), questionNum(QuestionNum), customAnswer(CustomAnswer) {
+     : litesql::Persistent(db), id(Id), type(Type), questionNum(QuestionNum), customAnswer(CustomAnswer), score(Score)  {
     defaults();
 }
 StudentCustomAnswer::StudentCustomAnswer(const litesql::Database& db, const litesql::Record& rec)
-     : litesql::Persistent(db, rec), id(Id), type(Type), questionNum(QuestionNum), customAnswer(CustomAnswer) {
+     : litesql::Persistent(db, rec), id(Id), type(Type), questionNum(QuestionNum), customAnswer(CustomAnswer), score(Score) {
     defaults();
-    size_t size = (rec.size() > 4) ? 4 : rec.size();
+    size_t size = (rec.size() > 5) ? 5 : rec.size();
     switch(size) {
+    case 5: score = convert<const std::string&, int>(rec[4]);
+        score.setModified(false);
     case 4: customAnswer = convert<const std::string&, std::string>(rec[3]);
         customAnswer.setModified(false);
     case 3: questionNum = convert<const std::string&, int>(rec[2]);
@@ -1494,7 +1498,7 @@ StudentCustomAnswer::StudentCustomAnswer(const litesql::Database& db, const lite
     }
 }
 StudentCustomAnswer::StudentCustomAnswer(const StudentCustomAnswer& obj)
-     : litesql::Persistent(obj), id(obj.id), type(obj.type), questionNum(obj.questionNum), customAnswer(obj.customAnswer) {
+     : litesql::Persistent(obj), id(obj.id), type(obj.type), questionNum(obj.questionNum), customAnswer(obj.customAnswer), score(obj.score) {
 }
 const StudentCustomAnswer& StudentCustomAnswer::operator=(const StudentCustomAnswer& obj) {
     if (this != &obj) {
@@ -1502,6 +1506,7 @@ const StudentCustomAnswer& StudentCustomAnswer::operator=(const StudentCustomAns
         type = obj.type;
         questionNum = obj.questionNum;
         customAnswer = obj.customAnswer;
+        score = obj.score;
     }
     litesql::Persistent::operator=(obj);
     return *this;
@@ -1528,6 +1533,9 @@ std::string StudentCustomAnswer::insert(litesql::Record& tables, litesql::Record
     fields.push_back(customAnswer.name());
     values.push_back(customAnswer);
     customAnswer.setModified(false);
+    fields.push_back(score.name());
+    values.push_back(score);
+    score.setModified(false);
     fieldRecs.push_back(fields);
     valueRecs.push_back(values);
     return litesql::Persistent::insert(tables, fieldRecs, valueRecs, sequence__);
@@ -1547,6 +1555,7 @@ void StudentCustomAnswer::addUpdates(Updates& updates) {
     updateField(updates, table__, type);
     updateField(updates, table__, questionNum);
     updateField(updates, table__, customAnswer);
+    updateField(updates, table__, score);
 }
 void StudentCustomAnswer::addIDUpdates(Updates& updates) {
 }
@@ -1555,6 +1564,7 @@ void StudentCustomAnswer::getFieldTypes(std::vector<litesql::FieldType>& ftypes)
     ftypes.push_back(Type);
     ftypes.push_back(QuestionNum);
     ftypes.push_back(CustomAnswer);
+    ftypes.push_back(Score);
 }
 void StudentCustomAnswer::delRecord() {
     deleteFromTable(table__, id);
@@ -1601,6 +1611,7 @@ std::auto_ptr<StudentCustomAnswer> StudentCustomAnswer::upcastCopy() {
     np->type = type;
     np->questionNum = questionNum;
     np->customAnswer = customAnswer;
+    np->score = score;
     np->inDatabase = inDatabase;
     return auto_ptr<StudentCustomAnswer>(np);
 }
@@ -1610,6 +1621,7 @@ std::ostream & operator<<(std::ostream& os, StudentCustomAnswer o) {
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.questionNum.name() << " = " << o.questionNum << std::endl;
     os << o.customAnswer.name() << " = " << o.customAnswer << std::endl;
+    os << o.score.name() << " = " << o.score << std::endl;
     os << "-------------------------------------" << std::endl;
     return os;
 }
@@ -1642,7 +1654,7 @@ std::vector<litesql::Database::SchemaItem> TestSuiteDB::getSchema() const {
                                        +",presentation_ " + backend->getSQLType(A_field_type_integer,"") + ""
                                        +")"));
     res.push_back(Database::SchemaItem("StudentAnswer_","table","CREATE TABLE StudentAnswer_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",questionNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",answerNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",selected_ " + backend->getSQLType(A_field_type_boolean,"") + "" +")"));
-    res.push_back(Database::SchemaItem("StudentCustomAnswer_","table","CREATE TABLE StudentCustomAnswer_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",questionNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",customAnswer_ " + backend->getSQLType(A_field_type_string,"") + "" +")"));
+    res.push_back(Database::SchemaItem("StudentCustomAnswer_","table","CREATE TABLE StudentCustomAnswer_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",questionNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",customAnswer_ " + backend->getSQLType(A_field_type_string,"")+ "" + ",score " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
     res.push_back(Database::SchemaItem("Test_TestQuestion_","table","CREATE TABLE Test_TestQuestion_ (Test1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",TestQuestion2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
     res.push_back(Database::SchemaItem("Student_Test_","table","CREATE TABLE Student_Test_ (Student1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",Test2_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
     res.push_back(Database::SchemaItem("StudentAnswer_Test_","table","CREATE TABLE StudentAnswer_Test_ (StudentAnswer1_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +",Test2_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));

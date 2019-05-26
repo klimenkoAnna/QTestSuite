@@ -295,6 +295,9 @@ void TestWindow::saveChanges()
             customAns.customAnswer = qstr_to_stdstr( ui->plainTextEdit->toPlainText() );
             customAns.questionNum = curQuestionNum;
             customAns.update();
+
+            curStud->customAnswer().link( customAns );
+            curTest->studentCustomAnswers().link(customAns);
         }
         catch( Except e )
         {
@@ -304,6 +307,7 @@ void TestWindow::saveChanges()
             customAns.update();
 
             curStud->customAnswer().link( customAns );
+            curTest->studentCustomAnswers().link(customAns);
         }
     }
 }

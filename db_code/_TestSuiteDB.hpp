@@ -524,6 +524,8 @@ public:
     litesql::Field<int> questionNum;
     static const litesql::FieldType CustomAnswer;
     litesql::Field<std::string> customAnswer;
+    static const litesql::FieldType Score;
+    litesql::Field<int> score;
 protected:
     void defaults();
 public:

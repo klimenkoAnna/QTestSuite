@@ -8,7 +8,6 @@ QDBCheckBox* SUstudAnswersControls[ QTESTSUITE_MAX_ANS ];
 QDBCheckBox* SUrightAnswersControls[ QTESTSUITE_MAX_ANS ];
 
 
-
 SUStudResults::SUStudResults(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SUStudResults)
@@ -41,9 +40,9 @@ void SUStudResults::updateUI()
     }
 
     ui->label_1->setText( QString( "%1 - %2\n%3" )
-                        .arg( curStud->groupNum.value() )
-                        .arg( stdstr_to_qstr( curStud->surname.value() ) )
-                        .arg( stdstr_to_qstr( curTest->testName.value() ) ) );
+                          .arg( curStud->groupNum.value() )
+                          .arg( stdstr_to_qstr( curStud->surname.value() ) )
+                          .arg( stdstr_to_qstr( curTest->testName.value() ) ) );
 
     int totalQ = testQuestions.size();
     if( totalQ < 2 ) // no questions - create first
@@ -103,6 +102,9 @@ void SUStudResults::selfUpdateUI()
 
         ui->label_4->setVisible( false );
 
+        ui->pushButton_4->setEnabled(false);
+        ui->spinBox->setEnabled(false);
+
         for( int i = totalAns; i < QTESTSUITE_MAX_ANS; ++i )
         {
             if( SUstudAnswersControls[i]  )
@@ -124,12 +126,14 @@ void SUStudResults::selfUpdateUI()
             if( !SUstudAnswersControls[i] )
             {
                 SUstudAnswersControls[i] = new QDBCheckBox( NULL, i, QString(), QRect( 0, 0, 0, 0 ) );
+                SUstudAnswersControls[i]->setEnabled(false);
                 ui->verticalLayout_2->addWidget( SUstudAnswersControls[i] );
             }
 
             if( !SUrightAnswersControls[i] )
             {
                 SUrightAnswersControls[i] = new QDBCheckBox( NULL, i, QString(), QRect( 0, 0, 0, 0 ) );
+                SUrightAnswersControls[i]->setEnabled(false);
                 ui->verticalLayout_2a->addWidget( SUrightAnswersControls[i] );
             }
 
@@ -192,6 +196,10 @@ void SUStudResults::selfUpdateUI()
         {
             TestSuite::StudentCustomAnswer customAns =
                     curStud->customAnswer().get( TestSuite::StudentCustomAnswer::QuestionNum == curQuestionNum ).one();
+
+            ui->pushButton_4->setEnabled(true);
+            ui->spinBox->setEnabled(true);
+            ui->spinBox->setValue( curTest->studentCustomAnswers().get(TestSuite::StudentCustomAnswer::QuestionNum == curQuestionNum).one().score);
             ui->label_4->setText( stdstr_to_qstr( customAns.customAnswer.value() ) );
         }
         catch( Except e )
@@ -218,4 +226,12 @@ void SUStudResults::on_pushButton_3_clicked() // next
 {
     ++curQuestionNum;
     selfUpdateUI();
+}
+
+void SUStudResults::on_pushButton_4_clicked()
+{
+    int score = ui->spinBox->value();
+    StudentCustomAnswer sca = curTest->studentCustomAnswers().get(TestSuite::StudentCustomAnswer::QuestionNum == curQuestionNum).one();
+    sca.score = score;
+    sca.update();
 }
