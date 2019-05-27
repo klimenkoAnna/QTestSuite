@@ -70,7 +70,6 @@ void TestSelectWindow::updateUI()
         catch( Except e )
         {
             new QListWidgetItem( stdstr_to_qstr( (*it).testName.value() ), ui->listWidget );
-
         }
 
     }
