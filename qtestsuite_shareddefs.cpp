@@ -126,7 +126,7 @@ void getScores( int &minScore, int &maxScore, int &maxPossibleScore )
         }
         else // custom answer
         {
-            StudentCustomAnswer sca = curStud->customAnswer().get(TestSuite::StudentCustomAnswer::QuestionNum == i).one();
+            StudentCustomAnswer sca = curTest->studentCustomAnswers().get(TestSuite::StudentCustomAnswer::QuestionNum == i).one();
             minScore         += sca.score;
             maxScore         += QTESTSUITE_CUSTOM_ANSWER_WORTH;
             maxPossibleScore += QTESTSUITE_CUSTOM_ANSWER_WORTH;
