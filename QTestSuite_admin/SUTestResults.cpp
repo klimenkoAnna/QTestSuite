@@ -7,7 +7,7 @@
 
 #include "clipscpp.h"
 
-char* sClipsRulesFile = "clips_test_results_rules.clp";
+char* sClipsRulesFile = "/clips_test_results_rules.clp";
 
     void AddScoresData(int minScore, int maxScore, int maxPossibleScore, int groupNum, std::string surname,
                        int numClasses, int visitedClasses, int bonuses, int presentation)

@@ -13,7 +13,7 @@ using namespace TestSuite;
 #define QTESTSUITE_SALT_LEN             8
 #define QTESTSUITE_STD_ANSWER_WORTH     1
 #define QTESTSUITE_CUSTOM_ANSWER_WORTH  2
-#define QTESTSUITE_HIDE_FINISHED_TESTS  1 /// TODO: set
+#define QTESTSUITE_HIDE_FINISHED_TESTS  0 /// TODO: set
 
 //extern char* sSecretPhrase;  // the cipher
 extern char sSecretPhrase[];  // the cipher

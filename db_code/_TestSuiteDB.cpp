@@ -1037,19 +1037,26 @@ const litesql::FieldType Student::NumClasses("numClasses_",A_field_type_integer,
 const litesql::FieldType Student::VisitedClasses("visitedClasses_",A_field_type_integer,table__);
 const litesql::FieldType Student::Bonuses("bonuses_",A_field_type_integer,table__);
 const litesql::FieldType Student::Presentation("presentation_",A_field_type_integer,table__);
+const litesql::FieldType Student::Score("score",A_field_type_integer,table__);
+const litesql::FieldType Student::Checked("checked",A_field_type_integer,table__);
+
 void Student::defaults() {
     id = 0;
     groupNum = 0;
 }
 Student::Student(const litesql::Database& db)
-     : litesql::Persistent(db), id(Id), type(Type), groupNum(GroupNum), surname(Surname),numClasses(NumClasses), visitedClasses(VisitedClasses),bonuses(Bonuses), presentation(Presentation) {
+     : litesql::Persistent(db), id(Id), type(Type), groupNum(GroupNum), surname(Surname),numClasses(NumClasses), visitedClasses(VisitedClasses),bonuses(Bonuses), presentation(Presentation), score(Score), checked(Checked) {
     defaults();
 }
 Student::Student(const litesql::Database& db, const litesql::Record& rec)
-     : litesql::Persistent(db, rec), id(Id), type(Type), groupNum(GroupNum), surname(Surname),numClasses(NumClasses), visitedClasses(VisitedClasses),bonuses(Bonuses), presentation(Presentation) {
+     : litesql::Persistent(db, rec), id(Id), type(Type), groupNum(GroupNum), surname(Surname),numClasses(NumClasses), visitedClasses(VisitedClasses),bonuses(Bonuses), presentation(Presentation), score(Score), checked(Checked) {
     defaults();
-    size_t size = (rec.size() > 8) ? 8 : rec.size();
+    size_t size = (rec.size() > 10) ? 10 : rec.size();
     switch(size) {
+    case 10: checked = convert<const std::string&, int>(rec[9]);
+        checked.setModified(false);
+    case 9: score = convert<const std::string&, int>(rec[8]);
+        score.setModified(false);
     case 8: presentation = convert<const std::string&, int>(rec[7]);
         presentation.setModified(false);
     case 7: bonuses = convert<const std::string&, int>(rec[6]);
@@ -1069,7 +1076,7 @@ Student::Student(const litesql::Database& db, const litesql::Record& rec)
     }
 }
 Student::Student(const Student& obj)
-     : litesql::Persistent(obj), id(obj.id), type(obj.type), groupNum(obj.groupNum), surname(obj.surname),numClasses(obj.numClasses), visitedClasses(obj.visitedClasses),bonuses(obj.bonuses), presentation(obj.presentation) {
+     : litesql::Persistent(obj), id(obj.id), type(obj.type), groupNum(obj.groupNum), surname(obj.surname),numClasses(obj.numClasses), visitedClasses(obj.visitedClasses),bonuses(obj.bonuses), presentation(obj.presentation), score(obj.score), checked(obj.checked) {
 }
 const Student& Student::operator=(const Student& obj) {
     if (this != &obj) {
@@ -1081,6 +1088,8 @@ const Student& Student::operator=(const Student& obj) {
         visitedClasses = obj.visitedClasses;
         bonuses = obj.bonuses;
         presentation = obj.presentation;
+        score = obj.score;
+        checked = obj.checked;
     }
     litesql::Persistent::operator=(obj);
     return *this;
@@ -1124,6 +1133,14 @@ std::string Student::insert(litesql::Record& tables, litesql::Records& fieldRecs
     values.push_back(presentation);
     presentation.setModified(false);
 
+    fields.push_back(score.name());
+    values.push_back(score);
+    score.setModified(false);
+
+    fields.push_back(checked.name());
+    values.push_back(checked);
+    checked.setModified(false);
+
     fieldRecs.push_back(fields);
     valueRecs.push_back(values);
     return litesql::Persistent::insert(tables, fieldRecs, valueRecs, sequence__);
@@ -1147,6 +1164,9 @@ void Student::addUpdates(Updates& updates) {
     updateField(updates, table__, visitedClasses);
     updateField(updates, table__, bonuses);
     updateField(updates, table__, presentation);
+    updateField(updates, table__, score);
+    updateField(updates, table__, checked);
+
 }
 void Student::addIDUpdates(Updates& updates) {
 }
@@ -1159,6 +1179,8 @@ void Student::getFieldTypes(std::vector<litesql::FieldType>& ftypes) {
     ftypes.push_back(VisitedClasses);
     ftypes.push_back(Bonuses);
     ftypes.push_back(Presentation);
+    ftypes.push_back(Score);
+    ftypes.push_back(Checked);
 }
 void Student::delRecord() {
     deleteFromTable(table__, id);
@@ -1210,6 +1232,8 @@ std::auto_ptr<Student> Student::upcastCopy() {
     np->visitedClasses = visitedClasses;
     np->bonuses = bonuses;
     np->presentation = presentation;
+    np->score = score;
+    np->checked = checked;
     np->inDatabase = inDatabase;
     return auto_ptr<Student>(np);
 }
@@ -1223,6 +1247,8 @@ std::ostream & operator<<(std::ostream& os, Student o) {
     os << o.visitedClasses.name() << " = " << o.visitedClasses << std::endl;
     os << o.bonuses.name() << " = " << o.bonuses << std::endl;
     os << o.presentation.name() << " = " << o.presentation << std::endl;
+    os << o.score.name() << " = " << o.score << std::endl;
+    os << o.checked.name() << " = " << o.checked << std::endl;
     os << "-------------------------------------" << std::endl;
     return os;
 }
@@ -1652,6 +1678,8 @@ std::vector<litesql::Database::SchemaItem> TestSuiteDB::getSchema() const {
                                        +",visitedClasses_ " + backend->getSQLType(A_field_type_integer,"") + ""
                                        +",bonuses_ " + backend->getSQLType(A_field_type_integer,"") + ""
                                        +",presentation_ " + backend->getSQLType(A_field_type_integer,"") + ""
+                                       +",score " + backend->getSQLType(A_field_type_integer,"") + ""
+                                       +",checked " + backend->getSQLType(A_field_type_integer,"") + ""
                                        +")"));
     res.push_back(Database::SchemaItem("StudentAnswer_","table","CREATE TABLE StudentAnswer_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",questionNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",answerNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",selected_ " + backend->getSQLType(A_field_type_boolean,"") + "" +")"));
     res.push_back(Database::SchemaItem("StudentCustomAnswer_","table","CREATE TABLE StudentCustomAnswer_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",questionNum_ " + backend->getSQLType(A_field_type_integer,"") + "" +",customAnswer_ " + backend->getSQLType(A_field_type_string,"")+ "" + ",score " + backend->getSQLType(A_field_type_integer,"") + "" +")"));

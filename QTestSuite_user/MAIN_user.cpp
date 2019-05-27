@@ -36,11 +36,12 @@ int main(int argc, char *argv[])
         QStateMachine suiteStates;
         QState s_Main, s_TestSelect, s_Test, s_TestResuls;
 
-        s_Main         .addTransition( &w1, SIGNAL( GoToTestSelectWnd() ),  &s_TestSelect );      // student/user login --> test select
-        s_TestSelect   .addTransition( &w2, SIGNAL( GoToTestWnd() ),        &s_Test );            // test select        --> test
-        s_Test         .addTransition( &w3, SIGNAL( GoToTestResultsWnd() ), &s_TestResuls );      // test               --> results
-        s_Test         .addTransition( &w3, SIGNAL( GoToTestSelectWnd() ),  &s_TestSelect );      // test               --> test select (error)
-        s_TestResuls   .addTransition( &w4, SIGNAL( GoToLoginWnd() ),       &s_Main );            // results            --> login
+        s_Main            .addTransition( &w1, SIGNAL( GoToTestSelectWnd() ),  &s_TestSelect );        // student/user login    --> test select
+        s_TestSelect      .addTransition( &w2, SIGNAL( GoToTestWnd() ),        &s_Test );              // test select           --> test
+        s_Test            .addTransition( &w3, SIGNAL( GoToTestResultsWnd() ), &s_TestResuls );        // test                  --> results
+        s_Test            .addTransition( &w3, SIGNAL( GoToTestSelectWnd() ),  &s_TestSelect );        // test                  --> test select (error)
+        s_TestResuls      .addTransition( &w4, SIGNAL( GoToLoginWnd() ),       &s_Main );              // results               --> login
+
 
         QObject::connect( &s_Main,          SIGNAL( exited()  ), &w1, SLOT( hide() ) );           //сигнал exited() объекта s_Main связывается со слотом объекта w1
         QObject::connect( &s_Main,          SIGNAL( entered() ), &w1, SLOT( show() ) );

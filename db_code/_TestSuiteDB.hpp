@@ -397,6 +397,10 @@ public:
     litesql::Field<int> bonuses;
     static const litesql::FieldType Presentation;
     litesql::Field<int> presentation;
+    static const litesql::FieldType Score;
+    litesql::Field<int> score;
+    static const litesql::FieldType Checked;
+    litesql::Field<int> checked;
 protected:
     void defaults();
 public:

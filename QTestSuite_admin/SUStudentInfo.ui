@@ -14,41 +14,10 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="1">
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="text">
-      <string>Сохранить</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>Назад</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Количество занятий</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="lineEdit_3"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>TextLabel</string>
      </property>
     </widget>
    </item>
@@ -59,8 +28,59 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Фамилия</string>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="1">
     <widget class="QLineEdit" name="lineEdit"/>
+   </item>
+   <item row="7" column="1">
+    <widget class="QSpinBox" name="spinBox">
+     <property name="minimum">
+      <number>2</number>
+     </property>
+     <property name="maximum">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="lineEdit_2"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="lineEdit_3"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Посещенных занятий</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Назад</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="label_12">
+     <property name="text">
+      <string>Оценка</string>
+     </property>
+    </widget>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
@@ -69,23 +89,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Фамилия</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_10">
-     <property name="text">
-      <string>Мнение CLIPS:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="lineEdit_2"/>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
@@ -93,10 +96,27 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
+   <item row="9" column="1">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="text">
-      <string>Посещенных занятий</string>
+      <string>Сохранить</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="label_9"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>Мнение CLIPS:</string>
      </property>
     </widget>
    </item>
@@ -112,9 +132,6 @@
       <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="label_9"/>
    </item>
   </layout>
  </widget>

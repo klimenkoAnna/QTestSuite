@@ -3,11 +3,12 @@
 #include <QtWidgets/QMessageBox>
 #include "db_code/QDBCheckBox.h"
 #include "qtestsuite_shareddefs.h"
+#include "QDebug"
 
 //-----------------------------------------------------------
 
 #include "clipscpp.h"
-char* sClipsRulesFile1 = "clips_test_results_rules.clp";
+char* sClipsRulesFile1 = "/clips_test_results_rules.clp";
 
 SUStudentInfo::SUStudentInfo(QWidget *parent) :
     QDialog(parent),
@@ -110,6 +111,30 @@ void SUStudentInfo::on_pushButton_clicked() // finish
 
 void SUStudentInfo::on_pushButton_2_clicked() // finish
 {
+    updateData(false,true,true);
+}
+
+void SUStudentInfo::on_label_9_textChanged(const QString &arg1)
+{
+    updateData(true,false,true);
+}
+
+void SUStudentInfo::on_lineEdit_textChanged(const QString &arg1)
+{
+   updateData(true,false,true);
+}
+
+void SUStudentInfo::on_lineEdit_2_textChanged(const QString &arg1)
+{
+    updateData(true,false,true);
+}
+
+void SUStudentInfo::on_lineEdit_3_textChanged(const QString &arg1)
+{
+    updateData(true,false,true);
+}
+
+void SUStudentInfo::updateData(bool setScore, bool updStudent, bool scoreFromSpinBox){
     int classes = 0;
     int visitedClasses = 0;
     int bonuses = 0;
@@ -164,6 +189,9 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
     int maxScore = 0;
     int maxPossibleScore = 0;
     getScores( minScore, maxScore, maxPossibleScore ); // uses testQuestions[], curStud
+
+    qDebug()<<"Min:"<<minScore<<"Max:"<<minScore<<"MaxPossible:"<<maxPossibleScore;
+
     router.emptyBuffer();
     env.Reset();
     AddScoresData1(minScore,
@@ -177,7 +205,16 @@ void SUStudentInfo::on_pushButton_2_clicked() // finish
                    stud.presentation
                    );
     env.Run(-1);
+    QString rr = router.getBuffer();
+    int score=ui->spinBox->value();
+
+    if (!rr.isEmpty() && !scoreFromSpinBox)score = rr.at(11).digitValue();
+
+    stud.score = score;
+    stud.checked = 1;
+
+    if (setScore) ui->spinBox->setValue(score);
+    if (updStudent) stud.update();
+
     ui->label_11->setText(router.getBuffer());
 }
-
-

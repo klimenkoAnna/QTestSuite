@@ -59,7 +59,20 @@ void TestSelectWindow::updateUI()
     std::vector <TestSuite::Test>::iterator it = tests.begin();
     for( ; it != tests.end(); ++it )
     {
-        new QListWidgetItem( stdstr_to_qstr( (*it).testName.value() ), ui->listWidget );
+        try
+        {
+            Student st = (*it).students().get( TestSuite::Student::Surname == curStud->surname ).one();
+
+            if (!st.checked) new QListWidgetItem( stdstr_to_qstr( (*it).testName.value() + " Тест еще не проверен." ), ui->listWidget );
+            else new QListWidgetItem( stdstr_to_qstr( (*it).testName.value() + " Оценка:"+to_string(st.score) ), ui->listWidget );
+
+        }
+        catch( Except e )
+        {
+            new QListWidgetItem( stdstr_to_qstr( (*it).testName.value() ), ui->listWidget );
+
+        }
+
     }
 
     ui->label->setText( QString( "%1 - %2" )

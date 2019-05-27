@@ -23,7 +23,16 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
 
+    void on_label_9_textChanged(const QString &arg1);
+
+    void on_lineEdit_textChanged(const QString &arg1);
+
+    void on_lineEdit_2_textChanged(const QString &arg1);
+
+    void on_lineEdit_3_textChanged(const QString &arg1);
+
 private:
+    void updateData(bool setScore,bool updStudent,bool scoreFromSpinBox);
     Ui::SUStudentInfo *ui;
 };
 

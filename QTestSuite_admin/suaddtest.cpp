@@ -2,6 +2,7 @@
 #include "ui_suaddtest.h"
 #include <QtWidgets/QMessageBox>
 #include "clipscpp.h"
+#include <QRegExpValidator>
 
 
 
